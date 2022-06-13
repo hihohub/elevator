@@ -37,6 +37,7 @@
 </style>
 <script type="text/javascript">
    var timer = null;
+   var timer2 = null;
    const timing = 30;
    var is_open = new Boolean;
    var globalcount = 0;
@@ -56,8 +57,11 @@
          is_open = !is_open;
          if(is_open){
             timer = setInterval(opendoors,timing);
+            uptext();
          } else {
             timer = setInterval(lowertext,timing);
+            timer2 = setInterval(closedoors,timing);
+            //closedoors();
          }
       }
    }
@@ -68,7 +72,7 @@
          y += 10;
          if(x <= 0){
             clearInterval(timer);
-            uptext();
+            //uptext();
             return;
          }
          left_door.style.width = "" + x + "px";
@@ -90,14 +94,14 @@
          }
          text.innerHTML = blanks + content;
          text.style.display = "block";
-         timer = setInterval(raisetext,timing);
+         timer2 = setInterval(raisetext,timing);
    }
    raisetext = () => {
       text = document.getElementById("textcontent");
       globalcount -= 1;
       console.log("raising text " + globalcount);
       if(globalcount < 0){
-         clearInterval(timer);
+         clearInterval(timer2);
          return;
       }
       count = globalcount;
@@ -111,24 +115,20 @@
    lowertext = () => {
       globalcount += 1;
       console.log("lowering text " + globalcount);
-      if(globalcount > globallength){
+      if(globalcount >= globallength){
          clearInterval(timer);
-         downtext();
          return;
       }
       text = document.getElementById("textcontent");
       content = text.innerHTML;
       document.getElementById("textcontent").innerHTML = "<br>" + content;
    }
-   downtext = () => {
-         timer = setInterval(closedoors,timing);
-   }
    closedoors = () => {
          console.log("closing doors " + x + " " + y);
          x += 10;
          y -= 10;
          if(x > 250){
-            clearInterval(timer);
+            clearInterval(timer2);
             document.getElementById("textcontent").innerHTML = globalcontent;
             return;
          }
