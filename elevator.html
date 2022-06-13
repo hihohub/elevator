@@ -32,7 +32,6 @@
    overflow: scroll;
    position: absolute;
    z-index: 0;
-   display: none;
 }
 </style>
 <script type="text/javascript">
@@ -40,28 +39,32 @@
    var timer2 = null;
    const timing = 30;
    var is_open = new Boolean;
-   var globalcount = 0;
    var globallength = 0;
    var globalcontent = "";
+   var globalcount = 0;
    let x = 0;
    let y = 0;
    onload = () => {
       is_open = false;
       text = document.getElementById("textcontent");
       globalcontent = text.innerHTML;
+      lines = globalcontent.split("<br>").length;
+      count = lines - 1;
+      globalcount = count;
+      globallength = count;
       x = 250;
       y = 250;
+      timer = setInterval(lowertext,1);
       document.getElementById("elevator").onclick = () => {
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
          is_open = !is_open;
          if(is_open){
             timer = setInterval(opendoors,timing);
-            uptext();
+            timer2 = setInterval(raisetext,timing);
          } else {
             timer = setInterval(lowertext,timing);
             timer2 = setInterval(closedoors,timing);
-            //closedoors();
          }
       }
    }
@@ -72,7 +75,6 @@
          y += 10;
          if(x <= 0){
             clearInterval(timer);
-            //uptext();
             return;
          }
          left_door.style.width = "" + x + "px";
@@ -80,37 +82,18 @@
          //right_door.style.left = y + "px";
          console.log("opening doors " + x + " " + y);
    }
-   uptext = () => {
-         text = document.getElementById("textcontent");
-         content = text.innerHTML;
-         lines = content.split("<br>").length;
-         blanks = "";
-         count = lines - 1;
-         globalcount = count;
-         globallength = count;
-         while(count > 0){
-            count -= 1;
-            blanks += "<br>";
-         }
-         text.innerHTML = blanks + content;
-         text.style.display = "block";
-         timer2 = setInterval(raisetext,timing);
-   }
    raisetext = () => {
-      text = document.getElementById("textcontent");
       globalcount -= 1;
       console.log("raising text " + globalcount);
-      if(globalcount < 0){
+      if(globalcount <= 0){
          clearInterval(timer2);
          return;
       }
-      count = globalcount;
       blanks = "";
-      while(count > 0){
-         count -= 1;
+      for(z=1;z < globalcount;++z){
          blanks += "<br>";
       }
-      document.getElementById("textcontent").innerHTML = blanks + content;
+      document.getElementById("textcontent").innerHTML = blanks + globalcontent;
    }
    lowertext = () => {
       globalcount += 1;
@@ -124,12 +107,10 @@
       document.getElementById("textcontent").innerHTML = "<br>" + content;
    }
    closedoors = () => {
-         console.log("closing doors " + x + " " + y);
          x += 10;
          y -= 10;
          if(x > 250){
             clearInterval(timer2);
-            document.getElementById("textcontent").innerHTML = globalcontent;
             return;
          }
          console.log("closing doors " + x + " " + y);
