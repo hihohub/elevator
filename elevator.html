@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+#elevator {
+   height: 500px;
+   width: 500px;
+   margin: auto;
+   border: 1px solid black;
+   position: relative;
+   overflow: hidden;
+}
+.door {
+   background-color: hsl(0,40%,30%);
+   height: 500px;
+   width: 250px;
+   border: 3px ridge black;
+}
+#left_door {
+   position: absolute;
+   z-index: 1;
+}
+#right_door {
+   position: absolute;
+   z-index: 2;
+   right: 0px;
+}
+#textcontent {
+   height: 100%;
+   width: 100%;
+   text-align: center;
+   overflow: scroll;
+   position: absolute;
+   z-index: 0;
+   display: none;
+}
+</style>
+<script type="text/javascript">
+   var timer = null;
+   const timing = 30;
+   onload = () => {
+      document.getElementById("elevator").onclick = () => {
+         left_door = document.getElementById("left_door");
+         right_door = document.getElementById("right_door");
+         x = 250;
+         y = 250;
+         timer = setInterval(opendoors,timing);
+      }
+   }
+   opendoors = () => {
+         left_door = document.getElementById("left_door");
+         right_door = document.getElementById("right_door");
+         x -= 10;
+         y += 10;
+         if(x <= 0){
+            clearInterval(timer);
+            showtext();
+            return;
+         }
+         left_door.style.width = "" + x + "px";
+         right_door.style.width = "" + x + "px";
+         //right_door.style.left = y + "px";
+         console.log("opening doors " + x + " " + y);
+   }
+   showtext = () => {
+         text = document.getElementById("textcontent");
+         content = text.innerHTML;
+         lines = content.split("<br>").length;
+         blanks = "";
+         count = lines - 1;
+         globalcount = count;
+         while(count > 0){
+            count -= 1;
+            blanks += "<br>";
+         }
+         text.innerHTML = blanks + content;
+         text.style.display = "block";
+         timer = setInterval(raisetext,timing);
+   }
+   raisetext = () => {
+      text = document.getElementById("textcontent");
+      globalcount -= 1;
+      console.log("raising text " + globalcount);
+      if(globalcount < 0){
+         clearInterval(timer);
+         return;
+      }
+      count = globalcount;
+      blanks = "";
+      while(count > 0){
+         count -= 1;
+         blanks += "<br>";
+      }
+      document.getElementById("textcontent").innerHTML = blanks + content;
+   }
+</script>
+</head>
+<body>
+
+<div id="elevator">
+<div class="door" id="left_door"></div>
+<p id="textcontent">
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the text content of the elevator.<br>
+This is the last line.<br>
+</p>
+<div class="door" id="right_door"></div>
+</div>
+
+</body>
+</html>
+
