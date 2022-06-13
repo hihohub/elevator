@@ -1,0 +1,31 @@
+#elevator {
+   height: 500px;
+   width: 500px;
+   margin: auto;
+   border: 1px solid black;
+   position: relative;
+   overflow: hidden;
+}
+.door {
+   background-color: hsl(0,40%,30%);
+/*   height: 500px;
+   width: 250px; */
+   border: 3px ridge black;
+}
+#left_door {
+   position: absolute;
+   z-index: 1;
+}
+#right_door {
+   position: absolute;
+   z-index: 1;
+   right: 0px;
+}
+#textcontent {
+   height: 100%;
+   width: 100%;
+   text-align: center;
+   overflow: scroll;
+   position: absolute;
+   z-index: 0;
+}

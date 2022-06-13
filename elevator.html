@@ -1,132 +1,12 @@
 <!doctype html>
 <html>
 <head>
-<style type="text/css">
-#elevator {
-   height: 500px;
-   width: 500px;
-   margin: auto;
-   border: 1px solid black;
-   position: relative;
-   overflow: hidden;
-}
-.door {
-   background-color: hsl(0,40%,30%);
-   height: 500px;
-   width: 250px;
-   border: 3px ridge black;
-}
-#left_door {
-   position: absolute;
-   z-index: 1;
-}
-#right_door {
-   position: absolute;
-   z-index: 2;
-   right: 0px;
-}
-#textcontent {
-   height: 100%;
-   width: 100%;
-   text-align: center;
-   overflow: scroll;
-   position: absolute;
-   z-index: 0;
-}
-</style>
-<script type="text/javascript">
-   var timer = null;
-   var timer2 = null;
-   const timing = 30;
-   var is_open = new Boolean;
-   var globallength = 0;
-   var globalcontent = "";
-   var globalcount = 0;
-   let x = 0;
-   let y = 0;
-   onload = () => {
-      is_open = false;
-      text = document.getElementById("textcontent");
-      globalcontent = text.innerHTML;
-      lines = globalcontent.split("<br>").length;
-      count = lines - 1;
-      globalcount = count;
-      globallength = count;
-      x = 250;
-      y = 250;
-      timer = setInterval(lowertext,1);
-      document.getElementById("elevator").onclick = () => {
-         left_door = document.getElementById("left_door");
-         right_door = document.getElementById("right_door");
-         is_open = !is_open;
-         if(is_open){
-            timer = setInterval(opendoors,timing);
-            timer2 = setInterval(raisetext,timing);
-         } else {
-            timer = setInterval(lowertext,timing);
-            timer2 = setInterval(closedoors,timing);
-         }
-      }
-   }
-   opendoors = () => {
-         left_door = document.getElementById("left_door");
-         right_door = document.getElementById("right_door");
-         x -= 10;
-         y += 10;
-         if(x <= 0){
-            clearInterval(timer);
-            return;
-         }
-         left_door.style.width = "" + x + "px";
-         right_door.style.width = "" + x + "px";
-         //right_door.style.left = y + "px";
-         console.log("opening doors " + x + " " + y);
-   }
-   raisetext = () => {
-      globalcount -= 1;
-      console.log("raising text " + globalcount);
-      if(globalcount <= 0){
-         clearInterval(timer2);
-         return;
-      }
-      blanks = "";
-      for(z=1;z < globalcount;++z){
-         blanks += "<br>";
-      }
-      document.getElementById("textcontent").innerHTML = blanks + globalcontent;
-   }
-   lowertext = () => {
-      globalcount += 1;
-      console.log("lowering text " + globalcount);
-      if(globalcount >= globallength){
-         clearInterval(timer);
-         return;
-      }
-      text = document.getElementById("textcontent");
-      content = text.innerHTML;
-      document.getElementById("textcontent").innerHTML = "<br>" + content;
-   }
-   closedoors = () => {
-         x += 10;
-         y -= 10;
-         if(x > 250){
-            clearInterval(timer2);
-            return;
-         }
-         console.log("closing doors " + x + " " + y);
-         left_door = document.getElementById("left_door");
-         right_door = document.getElementById("right_door");
-         left_door.style.width = "" + x + "px";
-         right_door.style.width = "" + x + "px";
-         //right_door.style.left = y + "px";
-   }
-</script>
+<link rel="stylesheet" href="./elevator.css">
+<script type="text/javascript" src="./elevator.js"></script>
 </head>
 <body>
 
-<div id="elevator">
-<div class="door" id="left_door"></div>
-<p id="textcontent">
+<div id="elevator" width="300" height="500">
 This is the text content of the elevator.<br>
 This is the text content of the elevator.<br>
 This is the text content of the elevator.<br>
@@ -153,8 +33,6 @@ This is the text content of the elevator.<br>
 This is the text content of the elevator.<br>
 This is the text content of the elevator.<br>
 This is the last line.<br>
-</p>
-<div class="door" id="right_door"></div>
 </div>
 
 </body>
