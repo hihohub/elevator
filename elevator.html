@@ -38,13 +38,27 @@
 <script type="text/javascript">
    var timer = null;
    const timing = 30;
+   var is_open = new Boolean;
+   var globalcount = 0;
+   var globallength = 0;
+   var globalcontent = "";
+   let x = 0;
+   let y = 0;
    onload = () => {
+      is_open = false;
+      text = document.getElementById("textcontent");
+      globalcontent = text.innerHTML;
+      x = 250;
+      y = 250;
       document.getElementById("elevator").onclick = () => {
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
-         x = 250;
-         y = 250;
-         timer = setInterval(opendoors,timing);
+         is_open = !is_open;
+         if(is_open){
+            timer = setInterval(opendoors,timing);
+         } else {
+            timer = setInterval(lowertext,timing);
+         }
       }
    }
    opendoors = () => {
@@ -54,7 +68,7 @@
          y += 10;
          if(x <= 0){
             clearInterval(timer);
-            showtext();
+            uptext();
             return;
          }
          left_door.style.width = "" + x + "px";
@@ -62,13 +76,14 @@
          //right_door.style.left = y + "px";
          console.log("opening doors " + x + " " + y);
    }
-   showtext = () => {
+   uptext = () => {
          text = document.getElementById("textcontent");
          content = text.innerHTML;
          lines = content.split("<br>").length;
          blanks = "";
          count = lines - 1;
          globalcount = count;
+         globallength = count;
          while(count > 0){
             count -= 1;
             blanks += "<br>";
@@ -92,6 +107,37 @@
          blanks += "<br>";
       }
       document.getElementById("textcontent").innerHTML = blanks + content;
+   }
+   lowertext = () => {
+      globalcount += 1;
+      console.log("lowering text " + globalcount);
+      if(globalcount > globallength){
+         clearInterval(timer);
+         downtext();
+         return;
+      }
+      text = document.getElementById("textcontent");
+      content = text.innerHTML;
+      document.getElementById("textcontent").innerHTML = "<br>" + content;
+   }
+   downtext = () => {
+         timer = setInterval(closedoors,timing);
+   }
+   closedoors = () => {
+         console.log("closing doors " + x + " " + y);
+         x += 10;
+         y -= 10;
+         if(x > 250){
+            clearInterval(timer);
+            document.getElementById("textcontent").innerHTML = globalcontent;
+            return;
+         }
+         console.log("closing doors " + x + " " + y);
+         left_door = document.getElementById("left_door");
+         right_door = document.getElementById("right_door");
+         left_door.style.width = "" + x + "px";
+         right_door.style.width = "" + x + "px";
+         //right_door.style.left = y + "px";
    }
 </script>
 </head>
