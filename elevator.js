@@ -13,7 +13,6 @@
       var elevator = document.getElementById("elevator");
       var content = elevator.innerHTML;
       elevator.innerHTML = "<div class='door' id='left_door'></div><p id='textcontent'>" + content + "</p><div class='door' id='right_door'></div>";
-      is_open = false;
       text = document.getElementById("textcontent");
       globalcontent = text.innerHTML;
       height = document.getElementById("elevator").getAttribute("height");
@@ -21,39 +20,41 @@
       document.getElementById("elevator").style.width = width + "px";
       document.getElementById("elevator").style.height = height + "px";
       half = Number(width) / 2;
-      x = Math.round(half);
-      y = Math.round(half);
+      x = 0;
+      y = 0;
       document.getElementById("left_door").style.width = half + "px";
       document.getElementById("right_door").style.width = half + "px";
       document.getElementById("left_door").style.height = height + "px";
       document.getElementById("right_door").style.height = height + "px";
+      is_open = true;
       timer = setInterval(lowertext,1);
       document.getElementById("elevator").onclick = () => {
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
          is_open = !is_open;
          if(is_open){
-            timer = setInterval(opendoors,timing);
-            timer2 = setInterval(raisetext,timing);
-         } else {
             timer = setInterval(lowertext,timing);
             timer2 = setInterval(closedoors,timing);
+         } else {
+            timer = setInterval(opendoors,timing);
+            timer2 = setInterval(raisetext,timing);
          }
       }
    }
    opendoors = () => {
+         console.log("opening doors " + x + " " + y);
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
-         x -= 10;
+         x += 10;
          y += 10;
-         if(x <= 0){
+         if(x > 100){
+            x = 100;
+            y = 100;
             clearInterval(timer);
             return;
          }
-         left_door.style.width = "" + x + "px";
-         right_door.style.width = "" + x + "px";
-         //right_door.style.left = y + "px";
-         console.log("opening doors " + x + " " + y);
+         left_door.style.clipPath = "inset(0% " + x + "% 0% 0%)";
+         right_door.style.clipPath = "inset(0% 0% 0% " + y + "%)";
    }
    lowertext = () => {
       console.log("lowering text height " + height + " padding " + padtop);
@@ -75,16 +76,17 @@
       document.getElementById("textcontent").style.paddingTop = padtop + "px";
    }
    closedoors = () => {
-         x += 10;
+         console.log("closing doors " + x + " " + y);
+         x -= 10;
          y -= 10;
-         if(x > half){
+         if(x < 0){
+            x = 0;
+            y = 0;
             clearInterval(timer2);
             return;
          }
-         console.log("closing doors " + x + " " + y);
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
-         left_door.style.width = "" + x + "px";
-         right_door.style.width = "" + x + "px";
-         //right_door.style.left = y + "px";
+         left_door.style.clipPath = "inset(0% " + x + "% 0% 0%)";
+         right_door.style.clipPath = "inset(0% 0% 0% " + y + "%)";
    }
