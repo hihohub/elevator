@@ -2,11 +2,10 @@
    var timer2 = null;
    const timing = 30;
    var is_open = new Boolean;
-   var globallength = 0;
    var globalcontent = "";
-   var globalcount = 0;
    let width = 0;
    let height = 0;
+   let padtop = 0;
    let half = 0;
    let x = 0;
    let y = 0;
@@ -17,12 +16,8 @@
       is_open = false;
       text = document.getElementById("textcontent");
       globalcontent = text.innerHTML;
-      lines = globalcontent.split("<br>").length;
-      count = lines - 1;
-      globalcount = count;
-      globallength = count;
-      width = document.getElementById("elevator").getAttribute("width");
       height = document.getElementById("elevator").getAttribute("height");
+      width = document.getElementById("elevator").getAttribute("width");
       document.getElementById("elevator").style.width = width + "px";
       document.getElementById("elevator").style.height = height + "px";
       half = Number(width) / 2;
@@ -60,29 +55,24 @@
          //right_door.style.left = y + "px";
          console.log("opening doors " + x + " " + y);
    }
-   raisetext = () => {
-      globalcount -= 1;
-      console.log("raising text " + globalcount);
-      if(globalcount <= 0){
-         clearInterval(timer2);
-         return;
-      }
-      blanks = "";
-      for(z=1;z < globalcount;++z){
-         blanks += "<br>";
-      }
-      document.getElementById("textcontent").innerHTML = blanks + globalcontent;
-   }
    lowertext = () => {
-      globalcount += 1;
-      console.log("lowering text " + globalcount);
-      if(globalcount >= globallength){
+      console.log("lowering text height " + height + " padding " + padtop);
+      padtop += 10;
+      if(padtop > height){
          clearInterval(timer);
          return;
       }
-      text = document.getElementById("textcontent");
-      content = text.innerHTML;
-      document.getElementById("textcontent").innerHTML = "<br>" + content;
+      document.getElementById("textcontent").style.paddingTop = padtop + "px";
+   }
+   raisetext = () => {
+      console.log("raising text height " + height + " padding " + padtop);
+      padtop -= 10;
+      if(padtop <= 0){
+         padtop = 0;
+         clearInterval(timer2);
+         return;
+      }
+      document.getElementById("textcontent").style.paddingTop = padtop + "px";
    }
    closedoors = () => {
          x += 10;
