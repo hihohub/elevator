@@ -26,6 +26,28 @@
       document.getElementById("right_door").style.width = half + "px";
       document.getElementById("left_door").style.height = height + "px";
       document.getElementById("right_door").style.height = height + "px";
+      if(document.getElementById("elevator").getAttribute("image")){
+         left_door = document.getElementById("left_door");
+         right_door = document.getElementById("right_door");
+         left_image = document.createElement('img');
+         left_image.src = document.getElementById("elevator").getAttribute("image");
+         left_image.width = width;
+         left_image.height = height;
+         left_image.style.clipPath = "inset(0% 50% 0% 0%)";
+         left_door.appendChild(left_image);
+         right_image = document.createElement('img');
+         right_image.src = document.getElementById("elevator").getAttribute("image");
+         right_image.width = width;
+         right_image.height = height;
+         right_image.style.clipPath = "inset(0% 0% 0% 50%)";
+         right_door.appendChild(right_image);
+         right_door.firstChild.style.position = "relative";
+         right_door.firstChild.style.left = "-" + half + "px";
+         //left_door.style.backgroundImage = "url('" + image + "')";
+         //left_door.style.backgroundRepeat = "no-repeat";
+         //left_door.style.backgroundSize =  "cover";
+         //left_door.firstChild.style.clipPath = "inset(0% 50% 0% 0%)";
+      }
       is_open = true;
       timer = setInterval(lowertext,1);
       document.getElementById("elevator").onclick = () => {
