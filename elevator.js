@@ -9,23 +9,31 @@
    let half = 0;
    let x = 0;
    let y = 0;
+   let border = 1;
    onload = () => {
       var elevator = document.getElementById("elevator");
       var content = elevator.innerHTML;
       elevator.innerHTML = "<div class='door' id='left_door'></div><p id='textcontent'>" + content + "</p><div class='door' id='right_door'></div>";
       text = document.getElementById("textcontent");
       globalcontent = text.innerHTML;
-      height = document.getElementById("elevator").getAttribute("height");
-      width = document.getElementById("elevator").getAttribute("width");
+      if(document.getElementById("elevator").getAttribute("height") && document.getElementById("elevator").getAttribute("width")){
+         height = document.getElementById("elevator").getAttribute("height");
+         width = document.getElementById("elevator").getAttribute("width");
+      } else {
+         height = 300;
+         width = 300;
+      }
       document.getElementById("elevator").style.width = width + "px";
       document.getElementById("elevator").style.height = height + "px";
       half = Number(width) / 2;
       x = 0;
       y = 0;
       document.getElementById("left_door").style.width = half + "px";
-      document.getElementById("right_door").style.width = half + "px";
+      document.getElementById("right_door").style.width = (half - border) + "px";
       document.getElementById("left_door").style.height = height + "px";
       document.getElementById("right_door").style.height = height + "px";
+      document.getElementById("left_door").style.border = border + "px solid black";
+      document.getElementById("right_door").style.border = border + "px solid black";
       if(document.getElementById("elevator").getAttribute("image")){
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
@@ -34,15 +42,21 @@
          left_image.width = width;
          left_image.height = height;
          left_image.style.clipPath = "inset(0% 50% 0% 0%)";
+         left_door.style.overflow = "hidden";
          left_door.appendChild(left_image);
          right_image = document.createElement('img');
          right_image.src = document.getElementById("elevator").getAttribute("image");
          right_image.width = width;
          right_image.height = height;
          right_image.style.clipPath = "inset(0% 0% 0% 50%)";
+         right_door.style.overflow = "hidden";
          right_door.appendChild(right_image);
          right_door.firstChild.style.position = "relative";
          right_door.firstChild.style.left = "-" + half + "px";
+         //alert("left " + left_door.offsetWidth + " right " + right_door.offsetWidth);
+         //document.getElementById("left_door").style.width = half + "px";
+         //document.getElementById("right_door").style.width = half + "px";
+         //alert("left " + left_door.offsetWidth + " right " + right_door.offsetWidth);
          //left_door.style.backgroundImage = "url('" + image + "')";
          //left_door.style.backgroundRepeat = "no-repeat";
          //left_door.style.backgroundSize =  "cover";
@@ -50,6 +64,7 @@
       }
       is_open = true;
       timer = setInterval(lowertext,1);
+      document.getElementById("elevator").ondoubleclick = () => {}
       document.getElementById("elevator").onclick = () => {
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
@@ -79,23 +94,23 @@
          right_door.style.clipPath = "inset(0% 0% 0% " + y + "%)";
    }
    lowertext = () => {
-      console.log("lowering text height " + height + " padding " + padtop);
-      padtop += 10;
-      if(padtop > height){
-         clearInterval(timer);
-         return;
-      }
-      document.getElementById("textcontent").style.paddingTop = padtop + "px";
+        console.log("lowering text height " + height + " padding " + padtop);
+        padtop += 10;
+        if(padtop > height){
+           clearInterval(timer);
+           return;
+        }
+        document.getElementById("textcontent").style.paddingTop = padtop + "px";
    }
    raisetext = () => {
-      console.log("raising text height " + height + " padding " + padtop);
-      padtop -= 10;
-      if(padtop <= 0){
-         padtop = 0;
-         clearInterval(timer2);
-         return;
-      }
-      document.getElementById("textcontent").style.paddingTop = padtop + "px";
+        console.log("raising text height " + height + " padding " + padtop);
+        padtop -= 10;
+        if(padtop <= 0){
+           padtop = 0;
+           clearInterval(timer2);
+           return;
+        }
+        document.getElementById("textcontent").style.paddingTop = padtop + "px";
    }
    closedoors = () => {
          console.log("closing doors " + x + " " + y);
