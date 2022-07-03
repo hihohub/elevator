@@ -10,6 +10,7 @@
    let x = 0;
    let y = 0;
    let border = 1;
+   var lock = undefined;
    onload = () => {
       var elevator = document.getElementById("elevator");
       var content = elevator.innerHTML;
@@ -42,6 +43,7 @@
          left_image.width = width;
          left_image.height = height;
          left_image.style.clipPath = "inset(0% 50% 0% 0%)";
+         left_image.style.webkitClipPath = "inset(0% 50% 0% 0%)";
          left_door.style.overflow = "hidden";
          left_door.appendChild(left_image);
          right_image = document.createElement('img');
@@ -49,32 +51,28 @@
          right_image.width = width;
          right_image.height = height;
          right_image.style.clipPath = "inset(0% 0% 0% 50%)";
+         right_image.style.webkitClipPath = "inset(0% 0% 0% 50%)";
          right_door.style.overflow = "hidden";
          right_door.appendChild(right_image);
          right_door.firstChild.style.position = "relative";
          right_door.firstChild.style.left = "-" + half + "px";
-         //alert("left " + left_door.offsetWidth + " right " + right_door.offsetWidth);
-         //document.getElementById("left_door").style.width = half + "px";
-         //document.getElementById("right_door").style.width = half + "px";
-         //alert("left " + left_door.offsetWidth + " right " + right_door.offsetWidth);
-         //left_door.style.backgroundImage = "url('" + image + "')";
-         //left_door.style.backgroundRepeat = "no-repeat";
-         //left_door.style.backgroundSize =  "cover";
-         //left_door.firstChild.style.clipPath = "inset(0% 50% 0% 0%)";
       }
       is_open = true;
+      lock = 1;
       timer = setInterval(lowertext,1);
-      document.getElementById("elevator").ondoubleclick = () => {}
       document.getElementById("elevator").onclick = () => {
-         left_door = document.getElementById("left_door");
-         right_door = document.getElementById("right_door");
-         is_open = !is_open;
-         if(is_open){
-            timer = setInterval(lowertext,timing);
-            timer2 = setInterval(closedoors,timing);
-         } else {
-            timer = setInterval(opendoors,timing);
-            timer2 = setInterval(raisetext,timing);
+         if(typeof(lock)=="undefined"){
+           lock = 0;
+           left_door = document.getElementById("left_door");
+           right_door = document.getElementById("right_door");
+           is_open = !is_open;
+           if(is_open){
+              timer = setInterval(lowertext,timing);
+              timer2 = setInterval(closedoors,timing);
+           } else {
+              timer = setInterval(opendoors,timing);
+              timer2 = setInterval(raisetext,timing);
+           }
          }
       }
    }
@@ -85,45 +83,70 @@
          x += 10;
          y += 10;
          if(x > 100){
+            ++lock;
             x = 100;
             y = 100;
             clearInterval(timer);
+            if(lock >= 2){
+              lock = undefined;
+            }
             return;
          }
          left_door.style.clipPath = "inset(0% " + x + "% 0% 0%)";
+         left_door.style.webkitClipPath = "inset(0% " + x + "% 0% 0%)";
          right_door.style.clipPath = "inset(0% 0% 0% " + y + "%)";
-   }
-   lowertext = () => {
-        console.log("lowering text height " + height + " padding " + padtop);
-        padtop += 10;
-        if(padtop > height){
-           clearInterval(timer);
-           return;
-        }
-        document.getElementById("textcontent").style.paddingTop = padtop + "px";
+         right_door.style.webkitClipPath = "inset(0% 0% 0% " + y + "%)";
    }
    raisetext = () => {
         console.log("raising text height " + height + " padding " + padtop);
         padtop -= 10;
         if(padtop <= 0){
+           ++lock;
            padtop = 0;
            clearInterval(timer2);
+           document.getElementById("elevator").style.overflow = "scroll";
+           if(lock >= 2){
+             lock = undefined;
+           }
+           return;
+        }
+        document.getElementById("textcontent").style.paddingTop = padtop + "px";
+   }
+   lowertext = () => {
+        console.log("lowering text height " + height + " padding " + padtop);
+        padtop += 10;
+        if(padtop > height){
+           ++lock;
+           clearInterval(timer);
+           document.getElementById("elevator").style.overflow = "hidden";
+           if(lock >= 2){
+             lock = undefined;
+             document.getElementById("elevator").scrollTop = "0px";
+           }
            return;
         }
         document.getElementById("textcontent").style.paddingTop = padtop + "px";
    }
    closedoors = () => {
          console.log("closing doors " + x + " " + y);
+         document.getElementById("elevator").scrollTop = "0px";
          x -= 10;
          y -= 10;
          if(x < 0){
+            ++lock;
             x = 0;
             y = 0;
             clearInterval(timer2);
+            if(lock >= 2){
+              lock = undefined;
+              document.getElementById("elevator").scrollTop = "0px";
+            }
             return;
          }
          left_door = document.getElementById("left_door");
          right_door = document.getElementById("right_door");
          left_door.style.clipPath = "inset(0% " + x + "% 0% 0%)";
+         left_door.style.webkitClipPath = "inset(0% " + x + "% 0% 0%)";
          right_door.style.clipPath = "inset(0% 0% 0% " + y + "%)";
+         right_door.style.webkitClipPath = "inset(0% 0% 0% " + y + "%)";
    }

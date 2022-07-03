@@ -1,37 +1,87 @@
-#elevator {
+/* D. James Smith, July, 2022 */
+
+/* customizable properties */
+
+:root {
+   --elevator-height: 200px;
+   --elevator-width: 200px;
+   --elevator-text-duration: 500ms;
+   --elevator-text-func: linear;
+   --elevator-text-delay: 0ms;
+   --elevator-door-duration: 1s;
+   --elevator-door-func: linear;
+   --elevator-door-delay: 0ms;
+   --elevator-text-padding-left: 0px;
+   --elevator-text-padding-right: 0px;
+   --elevator-text-margin-left: 0px;
+}
+
+/* do not change these properties */
+
+.elevator {
+   height: var(--elevator-height);
+   width: var(--elevator-width);
+   overflow-x: scroll;
    margin: auto;
    border: 1px solid black;
    position: relative;
-   overflow: hidden;
+   background-color: #fff;
 }
-.door {
-   background-image: linear-gradient(hsl(0,0%,30%), hsl(0,0%,70%));
-   /*border: 1px solid black;*/
-   /* background-color: hsl(0,40%,30%); 
-   height: 500px;
-   width: 250px; */
-}
-#left_door {
-   position: absolute;
-   z-index: 1;
-   clip-path: inset(0% 0% 0% 0%);
-}
-#right_door {
-   position: absolute;
-   z-index: 1;
-   right: 0px;
-   clip-path: inset(0% 0% 0% 0%);
-}
-#textcontent {
-   height: 100%;
+.elevator-text-content {
+   height: var(--elevator-height);
+   overflow-y: scroll;
    width: 100%;
    text-align: center;
-   overflow-y: scroll;
-   overflow-x: hidden;
+   box-sizing: border-box;
+   margin-top: 0px;
+   margin-left: var(--elevator-text-margin-left);
+   padding-top: 100%;
+   padding-left: var(--elevator-text-padding-left); 
+   padding-right: var(--elevator-text-padding-right);
    position: absolute;
    z-index: 0;
-   margin-top: 0px;
-   box-sizing: border-box;
-   padding: 10px;
-   /* padding-top: 0px; */
+   transition: padding-top var(--elevator-text-duration) var(--elevator-text-func) var(--elevator-text-delay);
+}
+.elevator-door {
+   width: var(--elevator-width);
+   height: var(--elevator-height);
+   background-size: var(--elevator-width) var(--elevator-height);
+   background-repeat: no-repeat;
+}
+.elevator-door-without-image {
+   background-image: linear-gradient(hsl(0,0%,30%), hsl(0,0%,70%));
+}
+.elevator-image {
+   transition: clip-path var(--elevator-door-duration) var(--elevator-door-func) var(--elevator-door-delay);
+   transition: -webkit-clip-path var(--elevator-door-duration) var(--elevator-door-func) var(--elevator-door-delay);
+}
+.elevator-left-door {
+   position: absolute;
+   z-index: 1;
+}
+.elevator-right-door {
+   position: absolute;
+   z-index: 1;
+}
+.elevator-left-image {
+   clip-path: inset(0% 50.1% 0% 0%);
+   -webkit-clip-path: inset(0% 50.1% 0% 0%);
+}
+.elevator-right-image {
+   clip-path: inset(0% 0% 0% 50.1%);
+   -webkit-clip-path: inset(0% 0% 0% 50.1%);
+}
+.elevator-right-image:not(.elevator-door-without-image) {
+   left: -var(--elevator-width);
+}
+.elevator:hover .elevator-left-image {
+   clip-path: inset(0% 100% 0% 0%);
+   -webkit-clip-path: inset(0% 100% 0% 0%);
+}
+.elevator:hover .elevator-right-image {
+   clip-path: inset(0% 0% 0% 100%);
+   -webkit-clip-path: inset(0% 0% 0% 100%);
+}
+.elevator:hover .elevator-text-content {
+   padding-top: 5px;
 }
