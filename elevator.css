@@ -14,6 +14,8 @@
    --elevator-text-padding-left: 0px;
    --elevator-text-padding-right: 0px;
    --elevator-text-margin-left: 0px;
+   --closed-door-inset: 50.1%; /* change to 50% to remove most of visible gap */
+   --open-door-inset: 100%; /* change to 95% to leave doors visible */
 }
 
 /* do not change these properties */
@@ -64,23 +66,23 @@
    z-index: 1;
 }
 .elevator-left-image {
-   clip-path: inset(0% 50.1% 0% 0%);
-   -webkit-clip-path: inset(0% 50.1% 0% 0%);
+   clip-path: inset(0% var(--closed-door-inset) 0% 0%);
+   -webkit-clip-path: inset(0% var(--closed-door-inset) 0% 0%);
 }
 .elevator-right-image {
-   clip-path: inset(0% 0% 0% 50.1%);
-   -webkit-clip-path: inset(0% 0% 0% 50.1%);
+   clip-path: inset(0% 0% 0% var(--closed-door-inset));
+   -webkit-clip-path: inset(0% 0% 0% var(--closed-door-inset));
 }
 .elevator-right-image:not(.elevator-door-without-image) {
    left: -var(--elevator-width);
 }
 .elevator:hover .elevator-left-image {
-   clip-path: inset(0% 100% 0% 0%);
-   -webkit-clip-path: inset(0% 100% 0% 0%);
+   clip-path: inset(0% var(--open-door-inset) 0% 0%);
+   -webkit-clip-path: inset(0% var(--open-door-inset) 0% 0%);
 }
 .elevator:hover .elevator-right-image {
-   clip-path: inset(0% 0% 0% 100%);
-   -webkit-clip-path: inset(0% 0% 0% 100%);
+   clip-path: inset(0% 0% 0% var(--open-door-inset));
+   -webkit-clip-path: inset(0% 0% 0% var(--open-door-inset));
 }
 .elevator:hover .elevator-text-content {
    padding-top: 5px;
