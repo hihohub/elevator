@@ -1,28 +1,25 @@
-#elevator {
+.elevator {
    margin: auto;
    border: 1px solid black;
    position: relative;
    overflow: hidden;
+   background-color: white;
 }
-.door {
+.elevator-door {
    background-image: linear-gradient(hsl(0,0%,30%), hsl(0,0%,70%));
-   /*border: 1px solid black;*/
-   /* background-color: hsl(0,40%,30%); 
-   height: 500px;
-   width: 250px; */
 }
-#left_door {
+.elevator-left-door {
    position: absolute;
    z-index: 1;
    clip-path: inset(0% 0% 0% 0%);
 }
-#right_door {
+.elevator-right-door {
    position: absolute;
    z-index: 1;
    right: 0px;
    clip-path: inset(0% 0% 0% 0%);
 }
-#textcontent {
+.elevator-text-content {
    height: 100%;
    width: 100%;
    text-align: center;
@@ -31,5 +28,4 @@
    margin-top: 0px;
    box-sizing: border-box;
    padding: 10px;
-   /* padding-top: 0px; */
 }
