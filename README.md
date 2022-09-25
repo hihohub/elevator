@@ -1,15 +1,19 @@
 # elevator
 - A combined text and image component.
 - Two versions - javascript and css.
-- Javascript version - only one elevator per page.
+- Javascript version - multiple elevators per page.
 - - Javascript file elevator.js and CSS file elevator-js.css.
+- - Example file index-js.html.
 - - Minimal setup.
-- - Place the id 'elevator' within any container tag (e.g. div).
+- - Place the class 'elevator' within any container tag (e.g. div).
 - - Add descriptive text within the container tag.
 - - Specify values for attributes **width** and **height**.
 - - Specify optional **image** attribute with image address.
+- - Specify **mask** attribute with any value to completely hide the gap between the doors.
+- - Specify **hover** attribute with any value to open/close doors on hovering over elevator, otherwise default click handler.
 - CSS version - multiple elevators per page.
 - - CSS file elevator.css with no javascript file.
+- - Example file index-css.html.
 - - Bootstrap style setup...requires particular tags with particular attributes.
 - - Outer div tag with class 'elevator'.
 - - Three inner tags - div for left door, text container, div for right door. 

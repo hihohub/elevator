@@ -1,8 +1,9 @@
 let Elevators = [];
 class Elevator {
-	constructor(k,height,width,mask){
+	constructor(k,height,width,mask,hover){
 		this.is_open = true;
 		this.mask = mask;
+		this.hover = hover;
 		this.height = height;
 		this.width = width;
 		this.padtop = 0;
@@ -11,25 +12,32 @@ class Elevator {
 		this.half = 0;
 		this.timing = 30;
 		this.index = k;
-		this.border = 1;
 		this.lock = 1;
-		document.getElementsByClassName("elevator")[this.index].onclick = () => {
-			var elevator = Elevators[this.index];
-			if(typeof(elevator.lock)=="undefined"){
-				elevator.lock = 0;
-				left_door = document.querySelectorAll(".elevator-left-door")[k];
-				right_door = document.querySelectorAll(".elevator-right-door")[k];
-				elevator.is_open = !elevator.is_open;
-				if(elevator.is_open){
-					elevator.timer = setInterval(function(){elevator.lowertext()}.bind(elevator),elevator.timing);
-					elevator.timer2 = setInterval(function(){elevator.closedoors()}.bind(elevator),elevator.timing);
-				} else {
-					elevator.timer = setInterval(function(){elevator.opendoors()}.bind(elevator),elevator.timing);
-					elevator.timer2 = setInterval(function(){elevator.raisetext()}.bind(elevator),elevator.timing);
-				}
-			}
+		var events = [];
+		if(hover){
+			events.push("mouseover");
+			events.push("mouseout");
+		} else {
+			events.push("click");
 		}
-
+		for(let z = 0; z < events.length; z++){
+			document.getElementsByClassName("elevator")[this.index].addEventListener(events[z], () => { 
+				var elevator = Elevators[this.index];
+				if(typeof(elevator.lock)=="undefined"){
+					elevator.lock = 0;
+					left_door = document.querySelectorAll(".elevator-left-door")[k];
+					right_door = document.querySelectorAll(".elevator-right-door")[k];
+					elevator.is_open = !elevator.is_open;
+					if(elevator.is_open){
+						elevator.timer = setInterval(function(){elevator.lowertext()}.bind(elevator),elevator.timing);
+						elevator.timer2 = setInterval(function(){elevator.closedoors()}.bind(elevator),elevator.timing);
+					} else {
+						elevator.timer = setInterval(function(){elevator.opendoors()}.bind(elevator),elevator.timing);
+						elevator.timer2 = setInterval(function(){elevator.raisetext()}.bind(elevator),elevator.timing);
+					}
+				}
+			});
+		}
 		this.timer = null;
 		this.timer2 = null;
 		this.timer = setInterval(function(){this.lowertext()}.bind(this),1);
@@ -179,6 +187,11 @@ onload = () => {
 			right_door.firstChild.style.position = "relative";
 			right_door.firstChild.style.left = "-" + half + "px";
 		}
-		Elevators.push(new Elevator(k,height,width,mask));
+		if(elevator.getAttribute("hover")){
+			var hover = true;
+		} else {
+			var hover = false;
+		}
+		Elevators.push(new Elevator(k,height,width,mask,hover));
 	}
 }
