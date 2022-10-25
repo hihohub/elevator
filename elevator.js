@@ -131,7 +131,7 @@ class Elevator {
 		right_door.style.webkitClipPath = "inset(0% 0% 0% " + this.y + "%)";
 	}
 }
-onload = () => {
+window.addEventListener('load', () => {
 	var elevators = document.getElementsByClassName("elevator");
 	for(let k = 0; k < elevators.length; k++){
 		var elevator = elevators[k];
@@ -194,4 +194,4 @@ onload = () => {
 		}
 		Elevators.push(new Elevator(k,height,width,mask,hover));
 	}
-}
+});
